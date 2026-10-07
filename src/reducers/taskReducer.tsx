@@ -11,11 +11,15 @@ interface TaskState {
   pending: number
 }
 
-export type TaskAction = 
-  | { type: 'ADD_TODO', payload: string } 
+export type TaskAction =  { type: 'ADD_TODO', payload: string } 
   | { type: 'DELETE_TODO', payload: number } 
   | { type: 'TOGGLE_TODO', payload: number }
 
 
 export const taskReducer = (state: TaskState, action: TaskAction): TaskState => {
+
+  console.log(action)
+
+  return state
+
 }

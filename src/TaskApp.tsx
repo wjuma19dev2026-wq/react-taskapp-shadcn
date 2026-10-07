@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { taskReducer } from "./reducers/taskReducer";
 
         interface Todo {
           id: number;
@@ -19,28 +20,41 @@ export const TasksApp = () => {
   const [inputValue, setInputValue] = useState("");
 
   const addTodo = () => {
-    if (inputValue.length === 0) return;
-    const newTodo: Todo = {
-      id: todos.length + 1,
-      text: inputValue,
-      completed: false,
-    };
-    setTodos([...todos, newTodo]);
+    // if (inputValue.length === 0) return;
+    // const newTodo: Todo = {
+    //   id: todos.length + 1,
+    //   text: inputValue,
+    //   completed: false,
+    // };
+    // setTodos([...todos, newTodo]);
+    // 
+    const todos = taskReducer({
+      todos: [],
+      length: 0,
+      completed: 0,
+      pending: 0,
+    },{ type: 'ADD_TODO', payload: inputValue })
+
+    console.log(todos)
   };
 
   const toggleTodo = (id: number) => {
 
-    const updatedTodos = todos.map(todo => {
-      if(todo.id === id) {
-        todo.completed = !todo.completed
-        return todo
-      }
+    // const updatedTodos = todos.map(todo => {
+    //   if(todo.id === id) {
+    //     todo.completed = !todo.completed
+    //     return todo
+    //   }
 
-      return todo
+    //   return todo
 
-    })
+    // })
 
-    setTodos(updatedTodos)
+    // setTodos(updatedTodos)
+    
+
+
+    
 
   };
 
