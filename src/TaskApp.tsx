@@ -1,5 +1,5 @@
 import "./TaskApp.css";
-import { useState } from "react";
+import { useReducer, useState } from "react";
 
 import { Plus, Trash2, Check } from "lucide-react";
 
@@ -7,69 +7,43 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { taskReducer } from "./reducers/taskReducer";
+import { getTaskInitialState, taskReducer } from "./reducers/taskReducer";
 
-        interface Todo {
-          id: number;
-          text: string;
-          completed: boolean;
-        }
+
 
 export const TasksApp = () => {
-  const [todos, setTodos] = useState<Todo[]>([]);
+  // const [todos, setTodos] = useState<Todo[]>([]);
   const [inputValue, setInputValue] = useState("");
 
-  const addTodo = () => {
-    // if (inputValue.length === 0) return;
-    // const newTodo: Todo = {
-    //   id: todos.length + 1,
-    //   text: inputValue,
-    //   completed: false,
-    // };
-    // setTodos([...todos, newTodo]);
-    // 
-    const todos = taskReducer({
-      todos: [],
-      length: 0,
-      completed: 0,
-      pending: 0,
-    },{ type: 'ADD_TODO', payload: inputValue })
+  const [state, dispatch] = useReducer(taskReducer, getTaskInitialState())
 
-    console.log(todos)
+  const addTodo = () => {
+    if (inputValue.length === 0) return;
+    dispatch({ type: 'ADD_TODO', payload: inputValue })
+    setInputValue('')
+
   };
 
-  const toggleTodo = (id: number) => {
-
-    // const updatedTodos = todos.map(todo => {
-    //   if(todo.id === id) {
-    //     todo.completed = !todo.completed
-    //     return todo
-    //   }
-
-    //   return todo
-
-    // })
-
-    // setTodos(updatedTodos)
-    
-
-
-    
-
+  const toggleTodo = (id: string) => {
+    dispatch({
+      type: 'TOGGLE_TODO',
+      payload: id
+    })
   };
 
   const deleteTodo = (id: number) => {
 
-    const updatedTodos = todos.filter(todo => todo.id !== id)
-   setTodos(updatedTodos);
+    // const updatedTodos = todos.filter(todo => todo.id !== id)
+    // setTodos(updatedTodos);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    if(e.key === 'Enter') {
-      addTodo()
-    }
+    // if(e.key === 'Enter') {
+    //   addTodo()
+    // }
   };
 
+  const todos = state.todos
   const completedCount = todos.filter((todo) => todo.completed).length;
   const totalCount = todos.length;
 
