@@ -1,41 +1,63 @@
-import './TaskApp.css'
-import { useState } from 'react'
+import "./TaskApp.css";
+import { useState } from "react";
 
-import { Plus, Trash2, Check } from 'lucide-react'
+import { Plus, Trash2, Check } from "lucide-react";
 
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Checkbox } from '@/components/ui/checkbox'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-interface Todo {
-  id: number
-  text: string
-  completed: boolean
-}
+        interface Todo {
+          id: number;
+          text: string;
+          completed: boolean;
+        }
 
 export const TasksApp = () => {
-  const [todos, setTodos] = useState<Todo[]>([])
-  const [inputValue, setInputValue] = useState('')
+  const [todos, setTodos] = useState<Todo[]>([]);
+  const [inputValue, setInputValue] = useState("");
 
   const addTodo = () => {
-    console.log('Agregar tarea', inputValue)
-  }
+    if (inputValue.length === 0) return;
+    const newTodo: Todo = {
+      id: todos.length + 1,
+      text: inputValue,
+      completed: false,
+    };
+    setTodos([...todos, newTodo]);
+  };
 
   const toggleTodo = (id: number) => {
-    console.log('Cambiar de true a false', id)
-  }
+
+    const updatedTodos = todos.map(todo => {
+      if(todo.id === id) {
+        todo.completed = !todo.completed
+        return todo
+      }
+
+      return todo
+
+    })
+
+    setTodos(updatedTodos)
+
+  };
 
   const deleteTodo = (id: number) => {
-    console.log('Eliminar tarea', id)
-  }
+
+    const updatedTodos = todos.filter(todo => todo.id !== id)
+   setTodos(updatedTodos);
+  };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    console.log('Presiono enter')
-  }
+    if(e.key === 'Enter') {
+      addTodo()
+    }
+  };
 
-  const completedCount = todos.filter(todo => todo.completed).length
-  const totalCount = todos.length
+  const completedCount = todos.filter((todo) => todo.completed).length;
+  const totalCount = todos.length;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-4">
@@ -55,7 +77,7 @@ export const TasksApp = () => {
               <Input
                 placeholder="Añade una nueva tarea..."
                 value={inputValue}
-                onChange={e => setInputValue(e.target.value)}
+                onChange={(e) => setInputValue(e.target.value)}
                 onKeyDown={handleKeyPress}
                 className="flex-1 border-slate-200 focus:border-slate-400 focus:ring-slate-400"
               />
@@ -112,13 +134,13 @@ export const TasksApp = () => {
               </div>
             ) : (
               <div className="space-y-2">
-                {todos.map(todo => (
+                {todos.map((todo) => (
                   <div
                     key={todo.id}
                     className={`flex items-center gap-3 p-3 rounded-lg border transition-all duration-200 ${
                       todo.completed
-                        ? 'bg-slate-50 border-slate-200'
-                        : 'bg-white border-slate-200 hover:border-slate-300 hover:shadow-sm'
+                        ? "bg-slate-50 border-slate-200"
+                        : "bg-white border-slate-200 hover:border-slate-300 hover:shadow-sm"
                     }`}
                   >
                     <Checkbox
@@ -129,8 +151,8 @@ export const TasksApp = () => {
                     <span
                       className={`flex-1 transition-all duration-200 ${
                         todo.completed
-                          ? 'text-slate-500 line-through'
-                          : 'text-slate-800'
+                          ? "text-slate-500 line-through"
+                          : "text-slate-800"
                       }`}
                     >
                       {todo.text}
@@ -151,5 +173,5 @@ export const TasksApp = () => {
         </Card>
       </div>
     </div>
-  )
-}
+  );
+};
